@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="mainblock">
+	<h2>Decide whether the following statement is true or false: </h2>
+	<h2>{{ statement }}</h2>
+	<h3>When: </h3>
+    <h2>x = {{ x_value }}, y = {{ y_value }}</h2>
+	<button type="button" id="True" class="trueorfalse" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
+	<button type="button" id="False" class="trueorfalse" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
+	<h2 id="answer"></h2>
+	<button type="button" id="Retry" class="retry" autocomplete="off" onclick="reloadPage()">Retry?</button>
+</div>
+{% endblock %}
