@@ -3,10 +3,10 @@
 body {
 	height: 100%;
     background-color: #ffffff;
-	background-image: url("images/overlay.png"), -moz-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
-	background-image: url("images/overlay.png"), -webkit-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
-	background-image: url("images/overlay.png"), -ms-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
-	background-image: url("images/overlay.png"), linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
+	background-image: url("images/overlay.png"), -moz-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+	background-image: url("images/overlay.png"), -webkit-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+	background-image: url("images/overlay.png"), -ms-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+	background-image: url("images/overlay.png"), linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
 	background-repeat: repeat,			no-repeat,			no-repeat;
 	background-size: 100px 100px, cover,				cover;
 	background-position: top left,		center center,		bottom center;
@@ -20,7 +20,7 @@ body {
 /*
  * Create dark grey header with a white logo
  */
- 
+
 header {
   background-color: #2B2B2B;
   height: 35px;
@@ -45,9 +45,9 @@ header h1.logo:hover {
 /*
  * Center the body content
  */
- 
+
 .container {
-  width: 940px;
+  width: 60%;
   margin: 0 auto;
 }
 
@@ -77,7 +77,7 @@ h3 {
 
 button {
 	font-family: 'Source Sans Pro', sans-serif;
-	margin: auto auto auto 240px;
+	margin: auto auto auto 28%;
 	border-top: 1px solid #96d1f8;
 	background: #65a9d7;
 	background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
@@ -110,7 +110,7 @@ button:active {
 
 button.retry {
 	visibility: hidden;
-	margin: auto auto auto 420px;
+	margin: auto auto auto 45%;
 }
 
 /*

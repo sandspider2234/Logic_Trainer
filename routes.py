@@ -1,14 +1,20 @@
 import random
 from BinTree.BinTree import build_tree, solve_tree
 from flask import Flask, render_template
+
 app = Flask(__name__)
 
 
 def generate_statement_string():
     first_argument = random.choice(['x', 'y'])
     operator = random.choice(['>', '<', '==', '!=', '>=', '<='])
-    second_argument = random.randint(-100, 100)
-    statement_str = ''.join([first_argument, ' ', operator, ' ', str(second_argument)])
+    second_argument = random.choice([random.randint(-100, 100), 'x', 'y'])
+    gate = random.choice(['||', '&&'])
+    third_argument = random.choice(['x', 'y'])
+    second_operator = random.choice(['>', '<', '==', '!=', '>=', '<='])
+    fourth_argument = random.choice([random.randint(-100, 100), 'x', 'y'])
+    statement_str = ''.join([first_argument, ' ', operator, ' ', str(second_argument), ' ', gate,
+                             ' ', third_argument, ' ', second_operator, ' ', str(fourth_argument)])
     return statement_str
 
 

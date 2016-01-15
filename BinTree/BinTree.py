@@ -20,12 +20,16 @@ class BinTreeNode(object):
             tree.right = self.right
             self.right = tree
 
-    def set_info(self, info):
-        self.info = info
-
 
 def build_tree(string):
     tree = BinTreeNode(None)
+    for index, char in enumerate(string):
+        if tree.info is None:
+            if (char == '|' and string[index + 1] == '|') or \
+                    (char == '&' and string[index + 1] == '&'):
+                tree = BinTreeNode(string[index:index + 2])
+                tree.insert_right_child(build_tree(string[index + 2:len(string)]))
+                tree.insert_left_child(build_tree(string[:index]))
     for index, char in enumerate(string):
         if tree.info is None:
             if (char == '<' and string[index + 1] == '=') or \
@@ -45,7 +49,11 @@ def build_tree(string):
 
 
 def solve_tree(tree, x, y):
-    if tree.info == '<':
+    if tree.info == '&&':
+        return solve_tree(tree.left.info, x, y) and solve_tree(tree.right.info, x, y)
+    elif tree.info == '||':
+        return solve_tree(tree.left.info, x, y) or solve_tree(tree.right.info, x, y)
+    elif tree.info == '<':
         return solve_tree(tree.left.info, x, y) < solve_tree(tree.right.info, x, y)
     elif tree.info == '>':
         return solve_tree(tree.left.info, x, y) > solve_tree(tree.right.info, x, y)
