@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="w3-card-4 w3-center w3-light-grey w3-animate-top" style="padding: 10px 0 30px 0;">
+  <form class="w3-container" autocomplete="off" action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      Please enter statement:<br>
+      {{ form.statement(size=80) }}<br>
+    </p>
+    <input class="w3-btn w3-teal w3-round-xxlarge" type="submit" value="Submit">
+  </form>
+  <hr>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block body %}{% endblock %}
+</div>
+{% endblock %}

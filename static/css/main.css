@@ -2,7 +2,7 @@
 
 body {
 	height: 100%;
-    background-color: #ffffff;
+  background-color: #ffffff;
 	background-image: url("images/overlay.png"), -moz-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
 	background-image: url("images/overlay.png"), -webkit-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
 	background-image: url("images/overlay.png"), -ms-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
@@ -16,10 +16,6 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 	color: #444;
 }
-
-/*
- * Create dark grey header with a white logo
- */
 
 header {
   background-color: #2B2B2B;
@@ -40,15 +36,6 @@ header h1.logo {
 header h1.logo:hover {
   color: #fff;
   text-decoration: none;
-}
-
-/*
- * Center the body content
- */
-
-.container {
-  width: 60%;
-  margin: 0 auto;
 }
 
 div.mainblock {
@@ -75,62 +62,10 @@ h3 {
   color: #999;
 }
 
-button {
-	font-family: 'Source Sans Pro', sans-serif;
-	margin: auto auto auto 28%;
-	border-top: 1px solid #96d1f8;
-	background: #65a9d7;
-	background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
-	background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
-	background: -moz-linear-gradient(top, #3e779d, #65a9d7);
-	background: -ms-linear-gradient(top, #3e779d, #65a9d7);
-	background: -o-linear-gradient(top, #3e779d, #65a9d7);
-	padding: 9px 18px;
-	-webkit-border-radius: 27px;
-	-moz-border-radius: 27px;
-	border-radius: 27px;
-	-webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-	-moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-	box-shadow: rgba(0,0,0,1) 0 1px 0;
-	text-shadow: rgba(0,0,0,.4) 0 1px 0;
-	color: white;
-	font-size: 20px;
-	text-decoration: none;
+input.text_input {
+	font-size: 2.3em;
+	margin: auto;
+	border-radius: 8px;
 	vertical-align: middle;
-}
-button:hover {
-   border-top-color: #28597a;
-   background: #28597a;
-   color: #ccc;
-}
-button:active {
-   border-top-color: #1b435e;
-   background: #1b435e;
-}
-
-button.retry {
-	visibility: hidden;
-	margin: auto auto auto 45%;
-}
-
-/*
- * Display navigation links inline
- */
-
-.menu {
-	float: right;
-	margin-top: 8px;
-}
-
-.menu li {
-	display: inline;
-}
-
-.menu li + li {
-	margin-left: 35px;
-}
-
-.menu li a {
-	color: #999;
-	text-decoration: none;
+	margin: auto auto auto 28%;
 }
