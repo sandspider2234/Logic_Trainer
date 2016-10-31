@@ -1,22 +1,41 @@
 {% extends "layout.html" %}
+{% block navbar %}
+<nav class="navbar navbar-dark bg-inverse">
+	<a class="navbar-brand" href="{{ url_for('home') }}">Logic Master</a>
+	<ul class="nav navbar-nav">
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('home') }}">Home</a>
+		</li>
+		<li class="nav-item active">
+			<a class="nav-link" href="{{ url_for('tester') }}">Tester<span class="sr-only"> (current)</span></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('about') }}">About</a>
+		</li>
+	</ul>
+</nav>
+{% endblock %}
+
 {% block content %}
-<div class="w3-card-4 w3-center w3-light-grey w3-animate-top" style="padding: 10px 0 30px 0;">
-  <form class="w3-container" autocomplete="off" action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-      Please enter statement:<br>
-      {{ form.statement(size=80) }}<br>
-    </p>
-    <input class="w3-btn w3-teal w3-round-xxlarge" type="submit" value="Submit">
-  </form>
-  <hr>
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-      <p>{{ message }}</p>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-  {% block body %}{% endblock %}
-</div>
+<article class="card animated fadeInLeft">
+	<div class="card-block">
+		<form autocomplete="off" action="" method="post">
+			{{ form.hidden_tag() }}
+			<h2>
+				Please enter statement:<br>
+				{{ form.statement(class_="form-control", size=80) }}<br>
+			</h2>
+			<input class="btn btn-primary btn-lg" type="submit" value="Submit">
+		</form>
+		<hr>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<h2>{{ message }}</h2>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		{% block body %}{% endblock %}
+	</div>
+</article>
 {% endblock %}

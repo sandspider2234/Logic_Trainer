@@ -1,14 +1,32 @@
 {% extends "layout.html" %}
-{% block content %}
-<div class="w3-card-4 w3-center w3-light-grey w3-animate-top" style="padding: 10px 0 30px 0;">
-	<h3>When</h3>
-	<h2>x = {{ x_value }}, y = {{ y_value }},</h2>
-	<h3>Decide whether the following statement is true or false: </h3>
-	<h2>{{ statement }}</h2>
-	<button type="button" id="True" class="w3-btn w3-teal w3-round-xxlarge" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
-	<button type="button" id="False" class="w3-btn w3-teal w3-round-xxlarge" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
-	<h2 id="answer"></h2>
-	<button type="button" id="Retry" style="visibility: hidden;" class="w3-btn w3-teal w3-round-xxlarge" autocomplete="off" onclick="reloadPage()">Retry?</button>
+{% block navbar %}
+<nav class="navbar navbar-dark bg-inverse">
+	<a class="navbar-brand" href="{{ url_for('home') }}">Logic Master</a>
+	<ul class="nav navbar-nav">
+		<li class="nav-item active">
+			<a class="nav-link" href="{{ url_for('home') }}">Home<span class="sr-only"> (current)</span></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('tester') }}">Tester</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_for('about') }}">About</a>
+		</li>
+	</ul>
+</nav>
+{% endblock %}
 
-</div>
+{% block content %}
+<article class="card animated fadeInLeft">
+	<div class="card-block">
+		<h3>When</h3>
+		<h2>x = {{ x_value }}, y = {{ y_value }},</h2>
+		<h3>Decide whether the following statement is true or false: </h3>
+		<h2>{{ statement }}</h2>
+		<button type="button" id="True" class="btn btn-primary btn-lg" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
+		<button type="button" id="False" class="btn btn-primary btn-lg" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
+		<h2 id="answer"></h2>
+		<button type="button" id="Retry" style="visibility: hidden;" class="btn btn-info btn-lg" autocomplete="off" onclick="reloadPage()">Retry?</button>
+	</div>
+</article>
 {% endblock %}
