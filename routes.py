@@ -34,9 +34,15 @@ def home():
 def tester():
     form = StatementForm()
     if form.validate_on_submit():
-        flash('Given statement is {0}, solution is {1}'.format(form.statement.data,
-                                                               str(BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0))))
-        redirect('/tester')
+        try:
+            solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0)
+            if type(solution) is not bool:
+                raise ValueError
+            flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
+            redirect('/tester')
+        except ValueError:
+            flash('Not valid statement!')
+            redirect('/tester')
     return render_template('tester.html', form=form)
 
 
