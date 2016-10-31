@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block content %}
-<article class="card animated fadeInLeft">
+<article class="card animated zoomIn">
 	<div class="card-block">
 		<form autocomplete="off" action="" method="post">
 			{{ form.hidden_tag() }}
@@ -25,7 +25,11 @@
 				Please enter statement:<br>
 				{{ form.statement(class_="form-control", size=80) }}<br>
 			</h2>
-			<input class="btn btn-primary btn-lg" type="submit" value="Submit">
+			<div style="text-align: center">
+				<div style="display: inline-block">
+					<input class="btn btn-primary btn-lg" type="submit" value="Submit">
+				</div>
+			</div>
 		</form>
 		<hr>
 		{% with messages = get_flashed_messages() %}

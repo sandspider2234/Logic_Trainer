@@ -17,16 +17,26 @@
 {% endblock %}
 
 {% block content %}
-<article class="card animated fadeInLeft">
+<article class="card animated zoomIn">
 	<div class="card-block">
 		<h3>When</h3>
 		<h2>x = {{ x_value }}, y = {{ y_value }},</h2>
 		<h3>Decide whether the following statement is true or false: </h3>
 		<h2>{{ statement }}</h2>
-		<button type="button" id="True" class="btn btn-primary btn-lg" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
-		<button type="button" id="False" class="btn btn-primary btn-lg" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
+		<br>
+		<div style="text-align: center">
+			<div style="display: inline-block">
+				<button type="button" id="True" class="btn btn-primary btn-lg" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
+				<button type="button" id="False" class="btn btn-primary btn-lg" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
+			</div>
+		</div>
 		<h2 id="answer"></h2>
-		<button type="button" id="Retry" style="visibility: hidden;" class="btn btn-info btn-lg" autocomplete="off" onclick="reloadPage()">Retry?</button>
+		<br>
+		<div style="text-align: center">
+			<div style="display: inline-block">
+				<button type="button" id="Retry" style="visibility: hidden;" class="btn btn-info btn-lg" autocomplete="off" onclick="reloadPage()">Retry?</button>
+			</div>
+		</div>
 	</div>
 </article>
 {% endblock %}
