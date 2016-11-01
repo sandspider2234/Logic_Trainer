@@ -1,9 +1,9 @@
 import random
 from BinTree import BinTree
-from flask import Flask, render_template, flash, redirect
+import flask
 from forms import StatementForm
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 app.config.from_object('config')
 
 
@@ -27,7 +27,7 @@ def home():
     statement_str = generate_statement_string()
     tree = BinTree.build_tree(statement_str)
     statement_result = BinTree.solve_tree(tree, x, y)
-    return render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str, result=str(statement_result))
+    return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str, result=str(statement_result))
 
 
 @app.route('/tester', methods=['GET', 'POST'])
@@ -38,17 +38,17 @@ def tester():
             solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0)
             if type(solution) is not bool:
                 raise ValueError
-            flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
-            redirect('/tester')
+            flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
+            flask.redirect('/tester')
         except ValueError:
-            flash('Not valid statement!')
-            redirect('/tester')
-    return render_template('tester.html', form=form)
+            flask.flash('Invalid statement!')
+            flask.redirect('/tester')
+    return flask.render_template('tester.html', form=form)
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return flask.render_template('about.html')
 
 
 if __name__ == '__main__':
