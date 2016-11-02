@@ -14,29 +14,25 @@
 {% endblock %}
 
 {% block content %}
-<article class="card animated zoomIn">
-	<div class="card-block">
-		<form autocomplete="off" action="" method="post">
-			{{ form.hidden_tag() }}
-			<h2>
-				Please enter statement:<br>
-				{{ form.statement(class_="form-control", size=80) }}<br>
-			</h2>
-			<div style="text-align: center">
-				<div style="display: inline-block">
-					<input class="btn btn-primary btn-lg" type="submit" value="Submit">
-				</div>
-			</div>
-		</form>
-		<hr>
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				{% for message in messages %}
-					<h2>{{ message }}</h2>
-				{% endfor %}
-			{% endif %}
-		{% endwith %}
-		{% block body %}{% endblock %}
+<form autocomplete="off" action="" method="post">
+	{{ form.hidden_tag() }}
+	<h2>
+		Please enter statement:<br>
+		{{ form.statement(class_="form-control", size=80) }}<br>
+	</h2>
+	<div style="text-align: center">
+		<div style="display: inline-block">
+			<input class="btn btn-primary btn-lg" type="submit" value="Submit">
+		</div>
 	</div>
-</article>
+</form>
+<hr>
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<h2>{{ message }}</h2>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+{% block body %}{% endblock %}
 {% endblock %}

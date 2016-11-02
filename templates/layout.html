@@ -9,6 +9,7 @@
 		<script type="text/javascript">
 			initialize("{{ result }}");
 		</script>
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body>
@@ -21,8 +22,12 @@
 		</header>
 		<div class="container">
 			<div class="row" style="margin-top: 1.5em;">
-				{% block content %}
-				{% endblock %}
+				<article class="card animated zoomIn">
+					<div class="card-block">
+						{% block content %}
+						{% endblock %}
+					</div>
+				</article>
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
