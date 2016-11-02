@@ -1,19 +1,16 @@
 {% extends "layout.html" %}
 {% block navbar %}
-<nav class="navbar navbar-dark bg-inverse">
-	<a class="navbar-brand" href="{{ url_for('home') }}">Logic Master</a>
-	<ul class="nav navbar-nav">
-		<li class="nav-item">
-			<a class="nav-link" href="{{ url_for('home') }}">Home</a>
-		</li>
-		<li class="nav-item active">
-			<a class="nav-link" href="{{ url_for('tester') }}">Tester<span class="sr-only"> (current)</span></a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="{{ url_for('about') }}">About</a>
-		</li>
-	</ul>
-</nav>
+<ul class="nav navbar-nav">
+	<li class="nav-item">
+		<a class="nav-link" href="{{ url_for('home') }}">Home</a>
+	</li>
+	<li class="nav-item active">
+		<a class="nav-link" href="{{ url_for('tester') }}">Tester<span class="sr-only"> (current)</span></a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" href="{{ url_for('about') }}">About</a>
+	</li>
+</ul>
 {% endblock %}
 
 {% block content %}

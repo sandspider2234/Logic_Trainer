@@ -8,12 +8,14 @@ var reloadPage = function() {
 var getAnswer = function(trueorfalse) {
 	if (trueorfalse == result) {
 		document.getElementById("answer").innerHTML = "Correct!";
+		document.getElementById("answer").style.color = "green";
 		document.getElementById("True").disabled = true;
 		document.getElementById("False").disabled = true;
 		document.getElementById("Retry").style.visibility = "visible";
 	}
 	else {
 		document.getElementById("answer").innerHTML = "Incorrect!";
+		document.getElementById("answer").style.color = "red";
 		document.getElementById("True").disabled = true;
 		document.getElementById("False").disabled = true;
 		document.getElementById("Retry").style.visibility = "visible";
