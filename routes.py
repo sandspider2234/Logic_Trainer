@@ -35,12 +35,14 @@ def tester():
     form = StatementForm()
     if form.validate_on_submit():
         try:
+            if '\'";' in form.statement.data:
+                raise ValueError
             solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0)
             if type(solution) is not bool:
                 raise ValueError
             flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
             flask.redirect('/tester')
-        except ValueError:
+        except (ValueError, IndexError):
             flask.flash('Invalid statement!')
             flask.redirect('/tester')
     return flask.render_template('tester.html', form=form)
