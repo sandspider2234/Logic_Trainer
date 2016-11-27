@@ -2,6 +2,7 @@ import random
 from BinTree import BinTree
 import flask
 import forms
+import pymysql
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
@@ -35,8 +36,6 @@ def tester():
     form = forms.StatementForm()
     if form.validate_on_submit():
         try:
-            if '\'";' in form.statement.data:
-                raise ValueError
             solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0)
             if type(solution) is not bool:
                 raise ValueError
@@ -50,8 +49,22 @@ def tester():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    login_form = forms.LoginForm()
-    signup_form = forms.SignupForm()
+    login_form = forms.LoginForm(prefix='login_form')
+    signup_form = forms.SignupForm(prefix='signup_form')
+    if signup_form.register.data and signup_form.validate_on_submit():
+        connection = pymysql.connect(host='SandSpider2234.mysql.pythonanywhere-services.com',
+                                     user='SandSpider2234',
+                                     password='***REMOVED***',
+                                     db='SandSpider2234$users',
+                                     cursorclass=pymysql.cursors.DictCursor)
+        try:
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, MD5(%s), %d);"
+                cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data, 0))
+            connection.commit()
+        finally:
+            connection.close()
+
     return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
 
