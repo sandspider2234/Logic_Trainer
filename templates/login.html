@@ -16,11 +16,14 @@
 
 {% block content %}
 <form autocomplete="on" action="" method="post">
-	{{ form.hidden_tag() }}
-	<h2>
-		Please enter username:<br>
-		{{ form.statement(class_="form-control", size=80) }}<br>
-	</h2>
+	{{ login_form.hidden_tag() }}
+	<h4>
+		Username:<br>
+		{{ login_form.username(class_="form-control", size=80) }}<br>
+		Password:<br>
+		{{ login_form.password(class_="form-control", size=80) }}
+		Remember me on computer: {{ login_form.remember_me() }}
+	</h4>
 	<div style="text-align: center">
 		<div style="display: inline-block">
 			<input class="btn btn-primary btn-lg" type="submit" value="Log in">

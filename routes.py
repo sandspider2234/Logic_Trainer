@@ -1,7 +1,7 @@
 import random
 from BinTree import BinTree
 import flask
-from forms import StatementForm
+import forms
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
@@ -32,7 +32,7 @@ def home():
 
 @app.route('/tester', methods=['GET', 'POST'])
 def tester():
-    form = StatementForm()
+    form = forms.StatementForm()
     if form.validate_on_submit():
         try:
             if '\'";' in form.statement.data:
@@ -46,6 +46,13 @@ def tester():
             flask.flash('Invalid statement!')
             flask.redirect('/tester')
     return flask.render_template('tester.html', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = forms.LoginForm()
+    signup_form = forms.SignupForm()
+    return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
 
 @app.route('/about')

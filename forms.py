@@ -1,18 +1,18 @@
-from flask_wtf import Form
+import flask_wtf
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms import validators
 
 
-class StatementForm(Form):
+class StatementForm(flask_wtf.Form):
     statement = StringField('statement', validators=[validators.DataRequired(), validators.Regexp("""[^\";']""")])
 
 
-class SignupForm(Form):
+class SignupForm(flask_wtf.Form):
     username = StringField('username', validators=[validators.DataRequired()])
     password = PasswordField('password', validators=[validators.DataRequired()])
 
 
-class LoginForm(Form):
+class LoginForm(flask_wtf.Form):
     username = StringField('username', validators=[validators.DataRequired()])
     password = PasswordField('password', validators=[validators.DataRequired()])
     remember_me = BooleanField('remember_me')
