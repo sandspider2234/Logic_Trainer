@@ -9,49 +9,65 @@
 <li class="nav-item">
 	<a class="nav-link" href="{{ url_for('about') }}">About</a>
 </li>
-<li class="nav-item float-xs-right active">
-	<a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only"> (current)</span></a>
-</li>
+{% if not current_user.is_authenticated %}
+	<li class="nav-item float-xs-right active">
+		<a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only"> (current)</span></a>
+	</li>
+{% else %}
+	<li class="nav-item float-xs-right active">
+		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+	</li>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
-<h2>LOGIN</h2><br>
-<form autocomplete="on" action="" method="post">
-	{{ login_form.hidden_tag() }}
-	<h4>
-		Username:<br>
-		{{ login_form.username(class_="form-control", size=80) }}<br>
-		Password:<br>
-		{{ login_form.password(class_="form-control", size=80) }}<br>
-		Remember me on computer: {{ login_form.remember_me() }}
-	</h4>
+{% if not current_user.is_authenticated %}
+	<h2>LOGIN</h2><br>
+	<form autocomplete="on" action="" method="post">
+		{{ login_form.hidden_tag() }}
+		<h4>
+			Username:<br>
+			{{ login_form.username(class_="form-control", size=80) }}<br>
+			Password:<br>
+			{{ login_form.password(class_="form-control", size=80) }}<br>
+			Remember me on computer: {{ login_form.remember_me() }}
+		</h4>
+		<div style="text-align: center">
+			<div style="display: inline-block">
+				{{ login_form.login(class_="btn btn-primary btn-lg") }}
+			</div>
+		</div>
+	</form>
+	<hr>
+	<h2>SIGNUP</h2><br>
+	<form autocomplete="on" action="" method="post">
+		{{ signup_form.hidden_tag() }}
+		<h4>
+			Email:<br>
+			{{ signup_form.email(class_="form-control") }}<br>
+			Username:<br>
+			{{ signup_form.username(class_="form-control") }}<br>
+			Password:<br>
+			{{ signup_form.password(class_="form-control") }}<br>
+			Type password again:<br>
+			{{ signup_form.verify(class_="form-control") }}<br>
+		</h4>
+		<div style="text-align: center">
+			<div style="display: inline-block">
+				{{ signup_form.register(class_="btn btn-primary btn-lg") }}
+			</div>
+		</div>
+	</form>
+	<hr>
+{% else %}
+	<h2>Hi there, {{current_user.username }}. Did you get here by accident?</h2>
 	<div style="text-align: center">
 		<div style="display: inline-block">
-			{{ login_form.login(class_="btn btn-primary btn-lg") }}
+			<button type="button" class="btn btn-primary btn-lg" onclick="location.href='/';" autocomplete="off">Go back home</button>
 		</div>
 	</div>
-</form>
-<hr>
-<h2>SIGNUP</h2><br>
-<form autocomplete="on" action="" method="post">
-	{{ signup_form.hidden_tag() }}
-	<h4>
-		Email:<br>
-		{{ signup_form.email(class_="form-control") }}<br>
-		Username:<br>
-		{{ signup_form.username(class_="form-control") }}<br>
-		Password:<br>
-		{{ signup_form.password(class_="form-control") }}<br>
-		Type password again:<br>
-		{{ signup_form.verify(class_="form-control") }}<br>
-	</h4>
-	<div style="text-align: center">
-		<div style="display: inline-block">
-			{{ signup_form.register(class_="btn btn-primary btn-lg") }}
-		</div>
-	</div>
-</form>
-<hr>
+{% endif %}
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
 		{% for message in messages %}

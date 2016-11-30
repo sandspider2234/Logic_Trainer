@@ -77,6 +77,8 @@ def tester():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if not flask_login.current_user.is_anonymous:
+        return flask.redirect('/')
     login_form = forms.LoginForm(prefix='login_form')
     signup_form = forms.SignupForm(prefix='signup_form')
     if signup_form.register.data and signup_form.validate_on_submit():
@@ -96,7 +98,7 @@ def login():
                 if result:
                     if flask_login.login_user(load_user(result['id']), remember=login_form.remember_me.data):
                         flask.flash('Logged in!')
-                        flask.redirect('/')
+                        return flask.redirect('/')
                     else:
                         flask.flash('Sorry, something went wrong.')
                 else:
@@ -108,6 +110,13 @@ def login():
 @app.route('/about')
 def about():
     return flask.render_template('about.html')
+
+
+@app.route('/logout')
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return flask.redirect('/')
 
 
 if __name__ == '__main__':
