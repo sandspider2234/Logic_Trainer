@@ -1,11 +1,34 @@
 import random
 from BinTree import BinTree
 import flask
+import flask_login
 import forms
-import pymysql
+import db
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+
+class User(flask_login.UserMixin):
+    def __init__(self, username, primary_id, active=True):
+        self.username = username
+        self.primary_id = primary_id
+        self.active = active
+
+    def get_id(self):
+        return str(self.primary_id).encode().decode()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    with db.create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM users WHERE id=%s"
+            cursor.execute(sql, (user_id))
+            result = cursor.fetchone()
+    return User(result.username, result.id)
 
 
 def generate_statement_string():
@@ -52,18 +75,27 @@ def login():
     login_form = forms.LoginForm(prefix='login_form')
     signup_form = forms.SignupForm(prefix='signup_form')
     if signup_form.register.data and signup_form.validate_on_submit():
-        connection = pymysql.connect(host='SandSpider2234.mysql.pythonanywhere-services.com',
-                                     user='SandSpider2234',
-                                     password='LogicalPassword',
-                                     db='SandSpider2234$users',
-                                     cursorclass=pymysql.cursors.DictCursor)
-        try:
+        with db.create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, MD5(%s), %d);"
+                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), %s);"
                 cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data, 0))
             connection.commit()
-        finally:
-            connection.close()
+        flask.flash('Signed up! Please log in.')
+
+    if login_form.login.data and login_form.validate_on_submit():
+        with db.create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM users WHERE username='%s' AND password=SHA1(%s)"
+                cursor.execute(sql, (login_form.username.data, login_form.password.data))
+                result = cursor.fetchone()
+                if result:
+                    if flask_login.login_user(result.username, remember=login_form.remember_me.data):
+                        flask.flash('Logged in!')
+                        flask.redirect('/')
+                    else:
+                        flask.flash('Sorry, something went wrong.')
+                else:
+                    flask.flash('Invalid username or password.')
 
     return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
