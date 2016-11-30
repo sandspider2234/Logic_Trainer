@@ -26,37 +26,40 @@ class User(flask_login.UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    with db.create_connection() as connection:
-        with connection.cursor() as cursor:
-            sql = "SELECT * FROM users WHERE id=%s"
-            cursor.execute(sql, (user_id))
-            result = cursor.fetchone()
-    if result:
-        return User(result['username'], result['id'])
-    return None
+    try:
+        with db.create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM users WHERE id=%s"
+                cursor.execute(sql, (user_id))
+                result = cursor.fetchone()
+        if result:
+            return User(result['username'], result['id'])
+        return None
+    except:
+        return None
 
 
-def generate_statement_string():
-    first_argument = random.choice(['x', 'y'])
-    first_operator = random.choice(['>', '<', '==', '!=', '>=', '<='])
-    second_argument = random.choice([random.randint(-100, 100), 'x', 'y'])
-    gate = random.choice(['||', '&&'])
-    third_argument = random.choice(['x', 'y'])
-    second_operator = random.choice(['>', '<', '==', '!=', '>=', '<='])
-    fourth_argument = random.choice([random.randint(-100, 100), 'x', 'y'])
-    statement_str = ''.join([first_argument, ' ', first_operator, ' ', str(second_argument), ' ', gate, ' ',
-                             third_argument, ' ', second_operator, ' ', str(fourth_argument)])
-    return statement_str
+def generate_statement_string(sections, rand_min=-100, rand_max=100):
+    statement_str = ''
+    while sections > 0:
+        statement_str += ' '.join([random.choice(['x', 'y', str(random.randint(rand_min, rand_max))]),
+                                   random.choice(['>', '<', '==', '!=', '>=', '<=']),
+                                   random.choice(['x', 'y', str(random.randint(rand_min, rand_max))])])
+        if sections == 1:
+            return statement_str
+        statement_str += ' ' + random.choice(['||', '&&']) + ' '
+        sections -= 1
 
 
 @app.route('/')
 def home():
     x = random.randint(-100, 100)
     y = random.randint(-100, 100)
-    statement_str = generate_statement_string()
+    statement_str = generate_statement_string(2)
     tree = BinTree.build_tree(statement_str)
     statement_result = BinTree.solve_tree(tree, x, y)
-    return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str, result=str(statement_result))
+    return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str,
+                                 result=str(statement_result))
 
 
 @app.route('/tester', methods=['GET', 'POST'])
@@ -82,27 +85,25 @@ def login():
     login_form = forms.LoginForm(prefix='login_form')
     signup_form = forms.SignupForm(prefix='signup_form')
     if signup_form.register.data and signup_form.validate_on_submit():
-        with db.create_connection() as connection:
-            with connection.cursor() as cursor:
-                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), %s);"
-                cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data, 0))
+        with db.create_connection() as connection, connection.cursor() as cursor:
+            sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), %s);"
+            cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data, 0))
             connection.commit()
         flask.flash('Signed up! Please log in.')
 
     if login_form.login.data and login_form.validate_on_submit():
-        with db.create_connection() as connection:
-            with connection.cursor() as cursor:
-                sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
-                cursor.execute(sql, (login_form.username.data, login_form.password.data))
-                result = cursor.fetchone()
-                if result:
-                    if flask_login.login_user(load_user(result['id']), remember=login_form.remember_me.data):
-                        flask.flash('Logged in!')
-                        return flask.redirect('/')
-                    else:
-                        flask.flash('Sorry, something went wrong.')
+        with db.create_connection() as connection, connection.cursor() as cursor:
+            sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
+            cursor.execute(sql, (login_form.username.data, login_form.password.data))
+            result = cursor.fetchone()
+            if result:
+                if flask_login.login_user(load_user(result['id']), remember=login_form.remember_me.data):
+                    flask.flash('Logged in!')
+                    return flask.redirect('/')
                 else:
-                    flask.flash('Invalid username or password.')
+                    flask.flash('Sorry, something went wrong.')
+            else:
+                flask.flash('Invalid username or password.')
 
     return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
