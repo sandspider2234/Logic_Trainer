@@ -20,6 +20,9 @@ class User(flask_login.UserMixin):
     def get_id(self):
         return str(self.primary_id).encode().decode()
 
+    def is_active(self):
+        return self.active
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,7 +31,9 @@ def load_user(user_id):
             sql = "SELECT * FROM users WHERE id=%s"
             cursor.execute(sql, (user_id))
             result = cursor.fetchone()
-    return User(result.username, result.id)
+    if result:
+        return User(result['username'], result['id'])
+    return None
 
 
 def generate_statement_string():
@@ -85,11 +90,11 @@ def login():
     if login_form.login.data and login_form.validate_on_submit():
         with db.create_connection() as connection:
             with connection.cursor() as cursor:
-                sql = "SELECT * FROM users WHERE username='%s' AND password=SHA1(%s)"
+                sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
                 cursor.execute(sql, (login_form.username.data, login_form.password.data))
                 result = cursor.fetchone()
                 if result:
-                    if flask_login.login_user(result.username, remember=login_form.remember_me.data):
+                    if flask_login.login_user(load_user(result['id']), remember=login_form.remember_me.data):
                         flask.flash('Logged in!')
                         flask.redirect('/')
                     else:
