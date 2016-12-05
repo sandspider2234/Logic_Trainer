@@ -71,10 +71,8 @@ def tester():
             if type(solution) is not bool:
                 raise ValueError
             flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
-            flask.redirect('/tester')
         except (ValueError, IndexError):
             flask.flash('Invalid statement!')
-            flask.redirect('/tester')
     return flask.render_template('tester.html', form=form)
 
 
