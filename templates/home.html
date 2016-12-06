@@ -14,7 +14,10 @@
 		<a class="nav-link" href="{{ url_for('login') }}">Login</a>
 	</li>
 {% else %}
-	<li class="nav-item float-xs-right active">
+	<span class="navbar-text float-xs-right">
+		Hi, {{ current_user.username }}!
+	</span>
+	<li class="nav-item float-xs-right">
 		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 	</li>
 {% endif %}
@@ -29,9 +32,6 @@
 	<hr>
 	{% endif %}
 {% endwith %}
-{% if current_user.is_authenticated %}
-	<h2>Hi {{current_user.username }}!</h2>
-{% endif %}
 <h3>When</h3>
 <h2>x = {{ x_value }}, y = {{ y_value }},</h2>
 <h3>Decide whether the following statement is true or false: </h3>
