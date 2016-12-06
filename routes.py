@@ -140,7 +140,7 @@ def profile(name):
     if not user:
         flask.flash('No such user!')
         return flask.redirect('/')
-    return flask.render_template('about.html', score=user['score'], username=name)
+    return flask.render_template('profile.html', score=user['score'], username=name)
 
 
 @app.route('/logout')
