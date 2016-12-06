@@ -135,12 +135,12 @@ def about():
 def profile(name):
     with db.create_connection() as connection, connection.cursor() as cursor:
         sql = "SELECT * FROM users WHERE username=%s"
-        cursor.execute(sql, name)
-        user = cursor.fetchone()
-    if not user:
+        cursor.execute(sql, (name))
+        result = cursor.fetchone()
+    if not result:
         flask.flash('No such user!')
         return flask.redirect('/')
-    return flask.render_template('profile.html', score=user['score'], username=name)
+    return flask.render_template('profile.html', score=result['score'], username=name)
 
 
 @app.route('/logout')

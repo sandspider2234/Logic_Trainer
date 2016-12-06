@@ -3,7 +3,7 @@
 <li class="nav-item">
 	<a class="nav-link" href="{{ url_for('home') }}">Home</a>
 </li>
-<li class="nav-item active">
+<li class="nav-item">
 	<a class="nav-link" href="{{ url_for('tester') }}">Tester<span class="sr-only"> (current)</span></a>
 </li>
 <li class="nav-item">
@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="display-1 text-primary text-xs-center">{{ name }}</h1>
+<h1 class="display-1 text-primary text-xs-center">{{ username }}</h1>
 <br>
 <h1 class="display-2 text-success text-xs-center" id="user_score"></h1>
 <script type="text/javascript">
@@ -40,6 +40,6 @@
         suffix : ''
     };
     var numAnimation = new CountUp("user_score", 0, {{ score }}, 0, 5, options);
-    demo.start();
+    numAnimation.start();
 </script>
 {% endblock %}
