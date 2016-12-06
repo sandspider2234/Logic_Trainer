@@ -17,6 +17,9 @@
 	<li class="nav-item float-xs-right">
 		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 	</li>
+	<li class="nav-item float-xs-right">
+        <a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile</a>
+    </li>
     <span class="navbar-text float-xs-right text-info">
 		Hi, {{ current_user.username }}!
 	</span>

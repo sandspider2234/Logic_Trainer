@@ -27,11 +27,10 @@ class User(flask_login.UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        with db.create_connection() as connection:
-            with connection.cursor() as cursor:
-                sql = "SELECT * FROM users WHERE id=%s"
-                cursor.execute(sql, (user_id))
-                result = cursor.fetchone()
+        with db.create_connection() as connection, connection.cursor() as cursor:
+            sql = "SELECT * FROM users WHERE id=%s"
+            cursor.execute(sql, (user_id))
+            result = cursor.fetchone()
         if result:
             return User(result['username'], result['id'])
         return None
@@ -129,6 +128,19 @@ def login():
 @app.route('/about')
 def about():
     return flask.render_template('about.html')
+
+
+@app.route('/user/<name>')
+@flask_login.login_required
+def profile(name):
+    with db.create_connection() as connection, connection.cursor() as cursor:
+        sql = "SELECT * FROM users WHERE username=%s"
+        cursor.execute(sql, name)
+        user = cursor.fetchone()
+    if not user:
+        flask.flash('No such user!')
+        return flask.redirect('/')
+    return flask.render_template('about.html', score=user['score'], username=name)
 
 
 @app.route('/logout')

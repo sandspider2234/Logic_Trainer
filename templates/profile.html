@@ -17,8 +17,8 @@
 	<li class="nav-item float-xs-right">
 		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 	</li>
-	<li class="nav-item float-xs-right">
-        <a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile</a>
+    <li class="nav-item float-xs-right active">
+        <a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile<span class="sr-only"> (current)</span></a>
     </li>
 	<span class="navbar-text float-xs-right text-info">
 		Hi, {{ current_user.username }}!
@@ -27,25 +27,19 @@
 {% endblock %}
 
 {% block content %}
-<form autocomplete="off" action="" method="post">
-	{{ form.hidden_tag() }}
-	<h2>
-		Please enter statement:<br>
-		{{ form.statement(class_="form-control", size=80) }}<br>
-	</h2>
-	<div style="text-align: center">
-		<div style="display: inline-block">
-			<input class="btn btn-primary btn-lg" type="submit" value="Submit">
-		</div>
-	</div>
-</form>
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		<hr>
-		{% for message in messages %}
-			<h2>{{ message }}</h2>
-		{% endfor %}
-	{% endif %}
-{% endwith %}
-{% block body %}{% endblock %}
+<h1 class="display-1 text-primary text-xs-center">{{ name }}</h1>
+<br>
+<h1 class="display-2 text-success text-xs-center" id="user_score"></h1>
+<script type="text/javascript">
+    var options = {
+        useEasing : true,
+        useGrouping : false,
+        separator : ',',
+        decimal : '.',
+        prefix : '',
+        suffix : ''
+    };
+    var numAnimation = new CountUp("user_score", 0, {{ score }}, 0, 5, options);
+    demo.start();
+</script>
 {% endblock %}
