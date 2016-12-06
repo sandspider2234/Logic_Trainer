@@ -21,6 +21,14 @@
 {% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<h2>{{ message }}</h2>
+		{% endfor %}
+	<hr>
+	{% endif %}
+{% endwith %}
 {% if current_user.is_authenticated %}
 	<h2>Hi {{current_user.username }}!</h2>
 {% endif %}
@@ -29,17 +37,14 @@
 <h3>Decide whether the following statement is true or false: </h3>
 <h2>{{ statement }}</h2>
 <br>
-<div style="text-align: center">
-	<div style="display: inline-block">
-		<button type="button" id="True" class="btn btn-success btn-lg" onclick="getAnswer('True')" autocomplete="off">TRUE</button>
-		<button type="button" id="False" class="btn btn-danger btn-lg" onclick="getAnswer('False')" autocomplete="off">FALSE</button>
+<form autocomplete="off" action="" method="post">
+	{{ form.csrf_token() }}
+	<div style="text-align: center">
+		<div style="display: inline-block">
+			{{ form.choice }}
+			{{ form.hidden(value=result) }}
+			{{ form.submit(class_="btn btn-primary btn-lg") }}
+		</div>
 	</div>
-</div>
-<h2 id="answer"></h2>
-<br>
-<div style="text-align: center">
-	<div style="display: inline-block">
-		<button type="button" id="Retry" style="visibility: hidden;" class="btn btn-info btn-lg" autocomplete="off" onclick="reloadPage()">Retry?</button>
-	</div>
-</div>
+</form>
 {% endblock %}

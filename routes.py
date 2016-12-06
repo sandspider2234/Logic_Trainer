@@ -51,15 +51,35 @@ def generate_statement_string(sections, rand_min=-100, rand_max=100):
         sections -= 1
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     x = random.randint(-100, 100)
     y = random.randint(-100, 100)
     statement_str = generate_statement_string(2)
     tree = BinTree.build_tree(statement_str)
     statement_result = BinTree.solve_tree(tree, x, y)
+    form = forms.TrueOrFalseForm(flask.request.form)
+    if form.validate_on_submit():
+        if not flask_login.current_user.is_anonymous:
+            if form.choice.data == form.hidden.data:
+                with db.create_connection() as connection, connection.cursor() as cursor:
+                    sql = "UPDATE users SET score = score + 2 WHERE id = %s"
+                    cursor.execute(sql, flask_login.current_user.get_id())
+                    connection.commit()
+                    flask.flash('Correct! +2 points!')
+            else:
+                with db.create_connection() as connection, connection.cursor() as cursor:
+                    sql = "UPDATE users SET score = score - 1 WHERE id = %s"
+                    cursor.execute(sql, flask_login.current_user.primary_id)
+                    connection.commit()
+                    flask.flash('Incorrect! -1 points!')
+        else:
+            if form.choice.data == form.hidden.data:
+                flask.flash('Correct!')
+            else:
+                flask.flash('Incorrect!')
     return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str,
-                                 result=str(statement_result))
+                                 result=str(statement_result), form=form)
 
 
 @app.route('/tester', methods=['GET', 'POST'])
@@ -84,8 +104,8 @@ def login():
     signup_form = forms.SignupForm(prefix='signup_form')
     if signup_form.register.data and signup_form.validate_on_submit():
         with db.create_connection() as connection, connection.cursor() as cursor:
-            sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), %s);"
-            cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data, 0))
+            sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0);"
+            cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
             connection.commit()
         flask.flash('Signed up! Please log in.')
 

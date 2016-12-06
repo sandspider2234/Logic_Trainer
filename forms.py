@@ -1,22 +1,29 @@
 import flask_wtf
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, HiddenField
 from wtforms import validators
 
 
-class StatementForm(flask_wtf.Form):
-    statement = StringField('statement', validators=[validators.DataRequired(), validators.Regexp("""[^\";']""")])
+class TrueOrFalseForm(flask_wtf.FlaskForm):
+    choice = RadioField(choices=[('True', 'TRUE'), ('False', 'FALSE')], validators=[validators.InputRequired()])
+    hidden = HiddenField()
+    submit = SubmitField('Submit')
 
 
-class SignupForm(flask_wtf.Form):
-    email = StringField('email', validators=[validators.DataRequired(), validators.Email()])
-    username = StringField('username', validators=[validators.DataRequired()])
-    password = PasswordField('password', validators=[validators.DataRequired(), validators.EqualTo('verify', message='Passwords must match.')])
-    verify = PasswordField('verify', validators=[validators.DataRequired()])
+class StatementForm(flask_wtf.FlaskForm):
+    statement = StringField('statement', validators=[validators.InputRequired(), validators.Regexp("""[^\";']""")])
+
+
+class SignupForm(flask_wtf.FlaskForm):
+    email = StringField('email', validators=[validators.InputRequired(), validators.Email()])
+    username = StringField('username', validators=[validators.InputRequired()])
+    password = PasswordField('password', validators=[validators.InputRequired(),
+                                                     validators.EqualTo('verify', message='Passwords must match.')])
+    verify = PasswordField('verify', validators=[validators.InputRequired()])
     register = SubmitField('Register')
 
 
-class LoginForm(flask_wtf.Form):
-    username = StringField('username', validators=[validators.DataRequired()])
-    password = PasswordField('password', validators=[validators.DataRequired()])
+class LoginForm(flask_wtf.FlaskForm):
+    username = StringField('username', validators=[validators.InputRequired()])
+    password = PasswordField('password', validators=[validators.InputRequired()])
     remember_me = BooleanField('remember_me')
     login = SubmitField('Log in')
