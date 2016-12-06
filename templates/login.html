@@ -14,12 +14,12 @@
 		<a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only"> (current)</span></a>
 	</li>
 {% else %}
-	<span class="navbar-text float-xs-right">
-		Hi, {{ current_user.username }}!
-	</span>
 	<li class="nav-item float-xs-right">
 		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 	</li>
+	<span class="navbar-text float-xs-right text-info">
+		Hi, {{ current_user.username }}!
+	</span>
 {% endif %}
 
 {% endblock %}
