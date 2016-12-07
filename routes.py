@@ -102,10 +102,18 @@ def login():
     login_form = forms.LoginForm(prefix='login_form')
     signup_form = forms.SignupForm(prefix='signup_form')
     if signup_form.register.data and signup_form.validate_on_submit():
-        with db.create_connection() as connection, connection.cursor() as cursor:
-            sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0);"
-            cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
-            connection.commit()
+        with db.create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM users WHERE username=%s OR email=%s"
+                cursor.execute(sql, (signup_form.username.data, signup_form.email.data))
+                result = cursor.fetchone()
+                if result:
+                    flask.flash('Usernname or email already exist!')
+                    return flask.redirect('/login')
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0)"
+                cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
+                connection.commit()
         flask.flash('Signed up! Please log in.')
 
     if login_form.login.data and login_form.validate_on_submit():
@@ -131,7 +139,6 @@ def about():
 
 
 @app.route('/user/<name>')
-@flask_login.login_required
 def profile(name):
     with db.create_connection() as connection, connection.cursor() as cursor:
         sql = "SELECT * FROM users WHERE username=%s"
