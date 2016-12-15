@@ -66,13 +66,13 @@ def home():
                     sql = "UPDATE users SET score = score + 2 WHERE id = %s"
                     cursor.execute(sql, flask_login.current_user.get_id())
                     connection.commit()
-                    flask.flash('Correct! +2 points!')
+                    flask.flash('Correct! +2 points!', 'success')
             else:
                 with db.create_connection() as connection, connection.cursor() as cursor:
                     sql = "UPDATE users SET score = score - 1 WHERE id = %s"
                     cursor.execute(sql, flask_login.current_user.primary_id)
                     connection.commit()
-                    flask.flash('Incorrect! -1 points!')
+                    flask.flash('Incorrect! -1 points!', 'success')
         else:
             if form.choice.data == form.hidden.data:
                 flask.flash('Correct!')
@@ -92,7 +92,7 @@ def tester():
                 raise ValueError
             flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
         except (ValueError, IndexError):
-            flask.flash('Invalid statement!')
+            flask.flash('Invalid statement!', 'error')
     return flask.render_template('tester.html', form=form)
 
 
@@ -115,7 +115,15 @@ def login():
                 sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0)"
                 cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
                 connection.commit()
-        flask.flash('Signed up! Please log in.')
+        with db.create_connection() as connection, connection.cursor() as cursor:
+            sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
+            cursor.execute(sql, (signup_form.username.data, signup_form.password.data))
+            result = cursor.fetchone()
+            if flask_login.login_user(load_user(result['id'])):
+                flask.flash('User created and logged in!', 'success')
+                return flask.redirect('/')
+            else:
+                flask.flash('User created but not logged in.')
 
     if login_form.login.data and login_form.validate_on_submit():
         with db.create_connection() as connection, connection.cursor() as cursor:
@@ -124,12 +132,12 @@ def login():
             result = cursor.fetchone()
             if result:
                 if flask_login.login_user(load_user(result['id']), remember=login_form.remember_me.data):
-                    flask.flash('Logged in!')
+                    flask.flash('Logged in!', 'success')
                     return flask.redirect('/')
                 else:
-                    flask.flash('Sorry, something went wrong.')
+                    flask.flash('Sorry, something went wrong.', 'error')
             else:
-                flask.flash('Invalid username or password.')
+                flask.flash('Invalid username or password.', 'error')
 
     return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
