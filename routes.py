@@ -72,7 +72,7 @@ def home():
                     sql = "UPDATE users SET score = score - 1 WHERE id = %s"
                     cursor.execute(sql, flask_login.current_user.primary_id)
                     connection.commit()
-                    flask.flash('Incorrect! -1 points!', 'success')
+                    flask.flash('Incorrect! -1 points!', 'error')
         else:
             if form.choice.data == form.hidden.data:
                 flask.flash('Correct!')
