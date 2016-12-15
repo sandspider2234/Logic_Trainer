@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
-{% block navbar %}
-{{ create_nav(['Home', 'Tester', 'About'], 'Profile') }}
-{% endblock %}
+{% set active_page = 'Profile' %}
+
 {% block content %}
 <h1 class="text-info text-xs-center">Name:</h1>
 <h1 class="display-1 text-primary text-xs-center">{{ username }}</h1>

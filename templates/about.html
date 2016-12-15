@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% block navbar %}
-{{ create_nav(['Home', 'Tester', 'About'], 'About') }}
-{% endblock %}
+{% set active_page = 'About' %}
 
 {% block content %}
 <h1 class="card-title">About</h1>

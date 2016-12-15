@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% block navbar %}
-{{ create_nav(['Home', 'Tester', 'About'], 'Home') }}
-{% endblock %}
+{% set active_page = 'Home' %}
 
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}

@@ -75,9 +75,9 @@ def home():
                     flask.flash('Incorrect! -1 points!', 'error')
         else:
             if form.choice.data == form.hidden.data:
-                flask.flash('Correct!')
+                flask.flash('Correct!', 'success')
             else:
-                flask.flash('Incorrect!')
+                flask.flash('Incorrect!', 'error')
     return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str,
                                  result=str(statement_result), form=form)
 

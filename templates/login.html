@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% block navbar %}
-{{ create_nav(['Home', 'Tester', 'About'], 'Login') }}
-{% endblock %}
+{% set active_page = 'Login' %}
 
 {% block content %}
 {% if not current_user.is_authenticated %}

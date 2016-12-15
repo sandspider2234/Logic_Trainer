@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% block navbar %}
-{{ create_nav(['Home', 'Tester', 'About'], 'Tester') }}
-{% endblock %}
+{% set active_page = 'Tester' %}
 
 {% block content %}
 <form autocomplete="off" action="" method="post">

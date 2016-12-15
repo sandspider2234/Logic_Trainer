@@ -1,39 +1,21 @@
 <!DOCTYPE html>
-{% macro create_nav(names, active) %}
+{% macro create_nav(names) %}
 	{% for name in names %}
-		{% if active == name %}
-			<li class="nav-item active">
-				<a class="nav-link" href="{{ url_for(name|lower) }}">{{ name|capitalize }}<span class="sr-only"> (current)</span></a>
-			</li>
-		{% else %}
-			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for(name|lower) }}">{{ name|capitalize }}</a>
-			</li>
-		{% endif %}
+		<li class="nav-item{% if active_page == name %} active{% endif %}">
+			<a class="nav-link" href="{{ url_for(name|lower) }}">{{ name|capitalize }}{% if active_page == name %}<span class="sr-only"> (current)</span>{% endif %}</a>
+		</li>
 	{% endfor %}
 	{% if not current_user.is_authenticated %}
-		{% if active == 'Login' %}
-			<li class="nav-item float-xs-right active">
-				<a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only"> (current)</span></a>
-			</li>
-		{% else %}
-			<li class="nav-item float-xs-right">
-				<a class="nav-link" href="{{ url_for('login') }}">Login</a>
-			</li>
-		{% endif %}
+		<li class="nav-item float-xs-right{% if active_page == 'Login' %} active{% endif %}">
+			<a class="nav-link" href="{{ url_for('login') }}">Login{% if active_page == 'Login' %}<span class="sr-only"> (current)</span>{% endif %}</a>
+		</li>
 	{% else %}
 		<li class="nav-item float-xs-right">
 			<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 		</li>
-		{% if active == 'Profile' %}
-			<li class="nav-item float-xs-right active">
-				<a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile<span class="sr-only"> (current)</span></a>
-			</li>
-		{% else %}
-			<li class="nav-item float-xs-right">
-				<a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile</a>
-			</li>
-		{% endif %}
+		<li class="nav-item float-xs-right{% if active_page == 'Profile' %} active{% endif %}">
+			<a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile{% if active_page == 'Profile' %}<span class="sr-only"> (current)</span>{% endif %}</a>
+		</li>
 		<span class="navbar-text float-xs-right text-info">
 			Hi, {{ current_user.username }}!
 		</span>
@@ -55,8 +37,8 @@
 			<nav class="navbar navbar-dark bg-inverse">
 				<a class="navbar-brand" href="{{ url_for('home') }}">Logical ALPHA</a>
 				<ul class="nav navbar-nav">
-					{% block navbar %}
-					{% endblock %}
+					{% set nav_list = ['Home', 'Tester', 'About'] %}
+					{{ create_nav(nav_list) }}
 				</ul>
 			</nav>
 		</header>
