@@ -1,31 +1,7 @@
 {% extends "layout.html" %}
 {% block navbar %}
-<li class="nav-item">
-	<a class="nav-link" href="{{ url_for('home') }}">Home</a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="{{ url_for('tester') }}">Tester<span class="sr-only"> (current)</span></a>
-</li>
-<li class="nav-item">
-	<a class="nav-link" href="{{ url_for('about') }}">About</a>
-</li>
-{% if not current_user.is_authenticated %}
-	<li class="nav-item float-xs-right">
-		<a class="nav-link" href="{{ url_for('login') }}">Login</a>
-	</li>
-{% else %}
-	<li class="nav-item float-xs-right">
-		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-	</li>
-    <li class="nav-item float-xs-right active">
-        <a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile<span class="sr-only"> (current)</span></a>
-    </li>
-	<span class="navbar-text float-xs-right text-info">
-		Hi, {{ current_user.username }}!
-	</span>
-{% endif %}
+{{ create_nav(['Home', 'Tester', 'About'], 'Profile') }}
 {% endblock %}
-
 {% block content %}
 <h1 class="text-info text-xs-center">Name:</h1>
 <h1 class="display-1 text-primary text-xs-center">{{ username }}</h1>

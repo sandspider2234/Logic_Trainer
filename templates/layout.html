@@ -1,4 +1,44 @@
 <!DOCTYPE html>
+{% macro create_nav(names, active) %}
+	{% for name in names %}
+		{% if active == name %}
+			<li class="nav-item active">
+				<a class="nav-link" href="{{ url_for(name|lower) }}">{{ name|capitalize }}<span class="sr-only"> (current)</span></a>
+			</li>
+		{% else %}
+			<li class="nav-item">
+				<a class="nav-link" href="{{ url_for(name|lower) }}">{{ name|capitalize }}</a>
+			</li>
+		{% endif %}
+	{% endfor %}
+	{% if not current_user.is_authenticated %}
+		{% if active == 'Login' %}
+			<li class="nav-item float-xs-right active">
+				<a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only"> (current)</span></a>
+			</li>
+		{% else %}
+			<li class="nav-item float-xs-right">
+				<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+			</li>
+		{% endif %}
+	{% else %}
+		<li class="nav-item float-xs-right">
+			<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+		</li>
+		{% if active == 'Profile' %}
+			<li class="nav-item float-xs-right active">
+				<a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile<span class="sr-only"> (current)</span></a>
+			</li>
+		{% else %}
+			<li class="nav-item float-xs-right">
+				<a class="nav-link" href="{{ url_for('profile', name=current_user.username) }}">Profile</a>
+			</li>
+		{% endif %}
+		<span class="navbar-text float-xs-right text-info">
+			Hi, {{ current_user.username }}!
+		</span>
+	{% endif %}
+{% endmacro %}
 <html>
 	<head>
 		<title>Logical</title>
