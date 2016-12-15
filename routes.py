@@ -9,7 +9,7 @@ app = flask.Flask(__name__)
 app.config.from_object('config')
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
-login_manager.login_view('login')
+login_manager.login_view = 'login'
 
 
 class User(flask_login.UserMixin):
