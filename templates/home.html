@@ -25,7 +25,14 @@
 	{{ form.csrf_token() }}
 	<div style="text-align: center">
 		<div style="display: inline-block">
-			{{ form.choice }}
+			<div class="btn-group btn-group-lg" data-toggle="buttons">
+				{% for subfield in form.choice %}
+					<label class="btn btn-{% if subfield.label.text == 'TRUE' %}success{% else %}danger{% endif %}">
+						{{ subfield }} {{ subfield.label.text }}
+					</label>
+				{% endfor %}
+			</div>
+			<br><br>
 			{{ form.hidden(value=result) }}
 			{{ form.submit(class_="btn btn-primary btn-lg") }}
 		</div>
