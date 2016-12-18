@@ -52,11 +52,17 @@
 	{% if messages %}
 		{% for category, message in messages %}
 			{% if category == "error" %}
-				<h2 style="color: #d9534f">{{ message }}</h2>
+				<div class="alert alert-danger" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
 			{% elif category == "success" %}
-				<h2 style="color: #5cb85c">{{ message }}</h2>
+				<div class="alert alert-success" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
 			{% else %}
-				<h2>{{ message }}</h2>
+				<div class="alert alert-info" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
 			{% endif %}
 		{% endfor %}
 	{% endif %}
