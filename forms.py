@@ -6,7 +6,6 @@ from wtforms import validators
 class TrueOrFalseForm(flask_wtf.FlaskForm):
     choice = RadioField(choices=[('True', 'TRUE'), ('False', 'FALSE')], validators=[validators.InputRequired()])
     hidden = HiddenField()
-    submit = SubmitField('Submit')
 
 
 class StatementForm(flask_wtf.FlaskForm):
