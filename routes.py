@@ -99,6 +99,7 @@ def tester():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if not flask_login.current_user.is_anonymous:
+        flask.flash('Already logged in!', 'error')
         return flask.redirect('/')
     login_form = forms.LoginForm(prefix='login_form')
     signup_form = forms.SignupForm(prefix='signup_form')
@@ -109,7 +110,7 @@ def login():
                 cursor.execute(sql, (signup_form.username.data, signup_form.email.data))
                 result = cursor.fetchone()
                 if result:
-                    flask.flash('Usernname or email already exist!')
+                    flask.flash('Username or email already exist!', 'error')
                     return flask.redirect('/login')
             with connection.cursor() as cursor:
                 sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0)"
