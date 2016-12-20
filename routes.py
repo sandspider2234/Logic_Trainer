@@ -78,6 +78,9 @@ def home():
                 flask.flash('Correct!', 'success')
             else:
                 flask.flash('Incorrect!', 'error')
+    elif form.errors:
+        for item in form.errors.items():
+            flask.flash(item, 'error')
     return flask.render_template('home.html', x_value=str(x), y_value=str(y), statement=statement_str,
                                  result=str(statement_result), form=form)
 
@@ -93,6 +96,9 @@ def tester():
             flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
         except (ValueError, IndexError):
             flask.flash('Invalid statement!', 'error')
+    elif form.errors:
+        for item in form.errors.items():
+            flask.flash(item, 'error')
     return flask.render_template('tester.html', form=form)
 
 
@@ -125,6 +131,9 @@ def login():
                 return flask.redirect('/')
             else:
                 flask.flash('User created but not logged in.')
+    elif signup_form.errors:
+        for item in signup_form.errors.items():
+            flask.flash(item, 'error')
 
     if login_form.login.data and login_form.validate_on_submit():
         with db.create_connection() as connection, connection.cursor() as cursor:
@@ -139,6 +148,9 @@ def login():
                     flask.flash('Sorry, something went wrong.', 'error')
             else:
                 flask.flash('Invalid username or password.', 'error')
+    elif login_form.errors:
+        for item in login_form.errors.items():
+            flask.flash(item, 'error')
 
     return flask.render_template('login.html', login_form=login_form, signup_form=signup_form)
 
