@@ -37,11 +37,14 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-dark bg-inverse">
+				<button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
 				<a class="navbar-brand" href="{{ url_for('home') }}">Logical ALPHA</a>
-				<ul class="nav navbar-nav">
-					{% set nav_list = ['Home', 'Tester', 'About'] %}
-					{{ create_nav(nav_list) }}
-				</ul>
+				<div class="collapse navbar-toggleable-md" id="navbarResponsive">
+					<ul class="nav navbar-nav">
+						{% set nav_list = ['Home', 'Tester', 'About'] %}
+						{{ create_nav(nav_list) }}
+					</ul>
+				</div>
 			</nav>
 		</header>
 		<div class="container">
