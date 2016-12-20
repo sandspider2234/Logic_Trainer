@@ -46,4 +46,9 @@
 		</div>
 	</div>
 </form>
+<script type="text/javascript">
+	var radio = document.getElementsByName("choice");
+	for (var i = 0; i < radio.length; i++)
+		radio[i].checked = false;
+</script>
 {% endblock %}
