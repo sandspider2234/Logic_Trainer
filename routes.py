@@ -172,6 +172,15 @@ def profile(name):
     return flask.render_template('profile.html', score=result['score'], username=name)
 
 
+@app.route('/leaderboard')
+def leaderboard():
+    with db.create_connection() as connection, connection.cursor() as cursor:
+        sql = "SELECT * FROM users ORDER BY score"
+        cursor.execute(sql)
+        user_dict = cursor.fetchall()
+    return flask.render_template('leaderboard.html', user_list=user_dict)
+
+
 @app.route('/logout')
 @flask_login.login_required
 def logout():

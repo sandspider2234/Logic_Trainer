@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% set active_page = 'Leaderboard' %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+		{% for category, message in messages %}
+			{% if category == "error" %}
+				<div class="alert alert-danger" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
+			{% elif category == "success" %}
+				<div class="alert alert-success" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
+			{% else %}
+				<div class="alert alert-info" role="alert">
+					<h4 class="text-xs-center">{{ message }}</h4>
+				</div>
+			{% endif %}
+		{% endfor %}
+	<hr>
+	{% endif %}
+{% endwith %}
+<table class="table table-bordered table-hover">
+	<thead class="thead-default">
+		<tr>
+			<th>#</th>
+			<th>Username</th>
+			<th>Score</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for user in user_dict %}
+			<tr>
+				<th scope="row">{{ loop.index }}</th>
+				<td>{{ user[username] }}</td>
+				<td>{{ user[score] }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
