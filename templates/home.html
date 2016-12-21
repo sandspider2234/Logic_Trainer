@@ -22,6 +22,12 @@
 	<hr>
 	{% endif %}
 {% endwith %}
+<script type="text/javascript">
+	function enableSubmit() {
+		var radio = document.getElementById("radioSubmit");
+		radio.removeAttribute("disabled");
+	}
+</script>
 <h4>When</h4>
 <h2><strong>x = {{ x_value }}, y = {{ y_value }}</strong>,</h2>
 <h4>Decide whether the following statement is true or false: </h4>
@@ -31,7 +37,7 @@
 	{{ form.csrf_token() }}
 	<div style="text-align: center">
 		<div style="display: inline-block">
-			<div class="btn-group btn-group-lg" data-toggle="buttons">
+			<div class="btn-group btn-group-lg" data-toggle="buttons" onclick="enableSubmit();">
 				{% for subfield in form.choice %}
 					<label class="btn btn-{% if subfield.label.text == 'TRUE' %}success{% else %}danger{% endif %}">
 						<i class="fa fa-thumbs-o-{% if subfield.label.text == 'TRUE' %}up{% else %}down{% endif %}" aria-hidden="true"></i>{{ subfield }} {{ subfield.label.text }}
@@ -40,7 +46,7 @@
 			</div>
 			<br><br>
 			{{ form.hidden(value=result) }}
-			<button type="submit" class="btn btn-primary btn-lg">
+			<button id="radioSubmit" type="submit" class="btn btn-primary btn-lg" disabled>
 				<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
 			</button>
 		</div>
