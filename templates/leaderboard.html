@@ -34,8 +34,8 @@
 		{% for user in user_dict %}
 			<tr>
 				<th scope="row">{{ loop.index }}</th>
-				<td>{{ user[username] }}</td>
-				<td>{{ user[score] }}</td>
+				<td>{{ user['username'] }}</td>
+				<td>{{ user['score'] }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>

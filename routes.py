@@ -175,10 +175,10 @@ def profile(name):
 @app.route('/leaderboard')
 def leaderboard():
     with db.create_connection() as connection, connection.cursor() as cursor:
-        sql = "SELECT * FROM users ORDER BY score"
+        sql = "SELECT * FROM users ORDER BY score DESC"
         cursor.execute(sql)
         user_dict = cursor.fetchall()
-    return flask.render_template('leaderboard.html', user_list=user_dict)
+    return flask.render_template('leaderboard.html', user_dict=user_dict)
 
 
 @app.route('/logout')
