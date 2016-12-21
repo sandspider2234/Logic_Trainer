@@ -22,22 +22,24 @@
 	<hr>
 	{% endif %}
 {% endwith %}
-<table class="table table-bordered table-hover">
-	<thead class="thead-default">
-		<tr>
-			<th>#</th>
-			<th>Username</th>
-			<th>Score</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for user in user_dict %}
+<div class="table-responsive" style="height: 700px; overflow: auto;">
+	<table class="table table-bordered table-hover">
+		<thead class="thead-default">
 			<tr>
-				<th scope="row">{{ loop.index }}</th>
-				<td>{{ user['username'] }}</td>
-				<td>{{ user['score'] }}</td>
+				<th>#</th>
+				<th>Username</th>
+				<th>Score</th>
 			</tr>
-		{% endfor %}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{% for user in user_dict %}
+				<tr>
+					<th scope="row">{{ loop.index }}</th>
+					<td>{{ user['username'] }}</td>
+					<td>{{ user['score'] }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 {% endblock %}
