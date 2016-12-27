@@ -119,7 +119,7 @@ def login():
                     flask.flash('Username or email already exist!', 'error')
                     return flask.redirect('/login')
             with connection.cursor() as cursor:
-                sql = "INSERT INTO users (username, email, password, score) VALUES (%s, %s, SHA1(%s), 0)"
+                sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, SHA1(%s))"
                 cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
                 connection.commit()
         with db.create_connection() as connection, connection.cursor() as cursor:
@@ -179,6 +179,19 @@ def leaderboard():
         cursor.execute(sql)
         user_dict = cursor.fetchall()
     return flask.render_template('leaderboard.html', user_dict=user_dict)
+
+
+@app.route('/dashboard')
+@flask_login.login_required
+def dashboard():
+    form = forms.DifficultyForm()
+    if form.validate_on_submit():
+        with db.create_connection() as connection, connection.cursor() as cursor:
+            sql = "UPDATE users SET difficulty = %s WHERE id = %s"
+            cursor.execute(sql, (form.difficulty.data, flask_login.current_user.primary_id))
+            flask.flash("Difficulty updated! Good luck!", 'success')
+            return flask.redirect('/')
+    return flask.render_template('dashboard.html', form=form)
 
 
 @app.route('/logout')

@@ -1,28 +1,38 @@
 import flask_wtf
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, HiddenField
-from wtforms import validators
+import wtforms
+
+
+class IntegerRangeField(wtforms.IntegerField):
+    widget = wtforms.widgets.Input(input_type="range")
+
+
+class DifficultyForm(flask_wtf.FlaskForm):
+    difficulty = IntegerRangeField('difficulty')
 
 
 class TrueOrFalseForm(flask_wtf.FlaskForm):
-    choice = RadioField(choices=[('True', 'TRUE'), ('False', 'FALSE')], validators=[validators.InputRequired()])
-    hidden = HiddenField()
+    choice = wtforms.RadioField(choices=[('True', 'TRUE'), ('False', 'FALSE')],
+                                validators=[wtforms.validators.InputRequired()])
+    hidden = wtforms.HiddenField()
 
 
 class StatementForm(flask_wtf.FlaskForm):
-    statement = StringField('statement', validators=[validators.InputRequired(), validators.Regexp("""[^\";']""")])
+    statement = wtforms.StringField('statement', validators=[wtforms.validators.InputRequired(),
+                                                             wtforms.validators.Regexp("""[^\";']""")])
 
 
 class SignupForm(flask_wtf.FlaskForm):
-    email = StringField('email', validators=[validators.InputRequired(), validators.Email()])
-    username = StringField('username', validators=[validators.InputRequired()])
-    password = PasswordField('password', validators=[validators.InputRequired(),
-                                                     validators.EqualTo('verify', message='Passwords must match.')])
-    verify = PasswordField('verify', validators=[validators.InputRequired()])
-    register = SubmitField('Register')
+    email = wtforms.StringField('email', validators=[wtforms.validators.InputRequired(), wtforms.validators.Email()])
+    username = wtforms.StringField('username', validators=[wtforms.validators.InputRequired()])
+    password = wtforms.PasswordField('password', validators=[wtforms.validators.InputRequired(),
+                                                             wtforms.validators.EqualTo('verify',
+                                                                                        message='Passwords must match.')])
+    verify = wtforms.PasswordField('verify', validators=[wtforms.validators.InputRequired()])
+    register = wtforms.SubmitField('Register')
 
 
 class LoginForm(flask_wtf.FlaskForm):
-    username = StringField('username', validators=[validators.InputRequired()])
-    password = PasswordField('password', validators=[validators.InputRequired()])
-    remember_me = BooleanField('remember_me')
-    login = SubmitField('Log in')
+    username = wtforms.StringField('username', validators=[wtforms.validators.InputRequired()])
+    password = wtforms.PasswordField('password', validators=[wtforms.validators.InputRequired()])
+    remember_me = wtforms.BooleanField('remember_me')
+    login = wtforms.SubmitField('Log in')
