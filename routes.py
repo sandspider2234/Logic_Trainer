@@ -13,9 +13,10 @@ login_manager.login_view = 'login'
 
 
 class User(flask_login.UserMixin):
-    def __init__(self, username, primary_id, active=True):
+    def __init__(self, username, primary_id, difficulty, active=True):
         self.username = username
         self.primary_id = primary_id
+        self.difficulty = difficulty
         self.active = active
 
     def get_id(self):
@@ -33,7 +34,7 @@ def load_user(user_id):
             cursor.execute(sql, (user_id))
             result = cursor.fetchone()
         if result:
-            return User(result['username'], result['id'])
+            return User(result['username'], result['id'], result['difficulty'])
         return None
     except:
         return None
@@ -55,24 +56,28 @@ def generate_statement_string(sections, rand_min=-100, rand_max=100):
 def home():
     x = random.randint(-100, 100)
     y = random.randint(-100, 100)
-    statement_str = generate_statement_string(2)
+    if flask_login.current_user.is_anonymous:
+        statement_str = generate_statement_string(2)
+    else:
+        statement_str = generate_statement_string(flask_login.current_user.difficulty)
     tree = BinTree.build_tree(statement_str)
     statement_result = BinTree.solve_tree(tree, x, y)
     form = forms.TrueOrFalseForm(flask.request.form)
     if form.validate_on_submit():
         if not flask_login.current_user.is_anonymous:
+            difficulty = flask_login.current_user.difficulty
             if form.choice.data == form.hidden.data:
                 with db.create_connection() as connection, connection.cursor() as cursor:
-                    sql = "UPDATE users SET score = score + 2 WHERE id = %s"
-                    cursor.execute(sql, flask_login.current_user.get_id())
+                    sql = "UPDATE users SET score = score + %s WHERE id = %s"
+                    cursor.execute(sql, (difficulty, flask_login.current_user.primary_id))
                     connection.commit()
-                    flask.flash('Correct! +2 points!', 'success')
+                    flask.flash('Correct! +{0} points!'.format(difficulty), 'success')
             else:
                 with db.create_connection() as connection, connection.cursor() as cursor:
-                    sql = "UPDATE users SET score = score - 1 WHERE id = %s"
-                    cursor.execute(sql, flask_login.current_user.primary_id)
+                    sql = "UPDATE users SET score = score - %s WHERE id = %s"
+                    cursor.execute(sql, (difficulty / 2, flask_login.current_user.primary_id))
                     connection.commit()
-                    flask.flash('Incorrect! -1 points!', 'error')
+                    flask.flash('Incorrect! -{0} points!'.format(difficulty / 2), 'error')
         else:
             if form.choice.data == form.hidden.data:
                 flask.flash('Correct!', 'success')
