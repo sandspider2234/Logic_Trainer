@@ -181,7 +181,7 @@ def leaderboard():
     return flask.render_template('leaderboard.html', user_dict=user_dict)
 
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 @flask_login.login_required
 def dashboard():
     form = forms.DifficultyForm()
@@ -189,8 +189,11 @@ def dashboard():
         with db.create_connection() as connection, connection.cursor() as cursor:
             sql = "UPDATE users SET difficulty = %s WHERE id = %s"
             cursor.execute(sql, (form.difficulty.data, flask_login.current_user.primary_id))
+            connection.commit()
             flask.flash("Difficulty updated! Good luck!", 'success')
             return flask.redirect('/')
+    elif form.errors:
+        flask.flash(form.errors, 'error')
     return flask.render_template('dashboard.html', form=form)
 
 

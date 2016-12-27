@@ -7,7 +7,7 @@ class IntegerRangeField(wtforms.IntegerField):
 
 
 class DifficultyForm(flask_wtf.FlaskForm):
-    difficulty = IntegerRangeField('difficulty')
+    difficulty = IntegerRangeField('difficulty', validators=[wtforms.validators.InputRequired()])
 
 
 class TrueOrFalseForm(flask_wtf.FlaskForm):

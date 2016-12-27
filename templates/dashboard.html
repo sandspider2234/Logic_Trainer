@@ -4,6 +4,7 @@
 {% block content %}
 <h1>Settings</h1><br>
 <form autocomplete="off" action="" method="post">
+    {{ form.hidden_tag() }}
     {{ form.difficulty(class_="form-control", min="1", max="5", step="1") }}
 	<div style="text-align: center">
 		<div style="display: inline-block">
