@@ -5,6 +5,7 @@
 <h1>Settings</h1><br>
 <form autocomplete="off" action="" method="post">
     {{ form.hidden_tag() }}
+	<h2>Difficulty (amount of [x OP y] sections):</h2><br>
     {{ form.difficulty(class_="form-control", min="1", max="5", step="1") }}
 	<div style="text-align: center">
 		<div style="display: inline-block">
