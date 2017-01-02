@@ -49,22 +49,16 @@ def build_tree(string):
 
 
 def solve_tree(tree, x, y):
-    if tree.info == '&&':
-        return solve_tree(tree.left.info, x, y) and solve_tree(tree.right.info, x, y)
-    elif tree.info == '||':
-        return solve_tree(tree.left.info, x, y) or solve_tree(tree.right.info, x, y)
-    elif tree.info == '<':
-        return solve_tree(tree.left.info, x, y) < solve_tree(tree.right.info, x, y)
-    elif tree.info == '>':
-        return solve_tree(tree.left.info, x, y) > solve_tree(tree.right.info, x, y)
-    elif tree.info == '>=':
-        return solve_tree(tree.left.info, x, y) >= solve_tree(tree.right.info, x, y)
-    elif tree.info == '<=':
-        return solve_tree(tree.left.info, x, y) <= solve_tree(tree.right.info, x, y)
-    elif tree.info == '==':
-        return solve_tree(tree.left.info, x, y) == solve_tree(tree.right.info, x, y)
-    elif tree.info == '!=':
-        return solve_tree(tree.left.info, x, y) != solve_tree(tree.right.info, x, y)
+    options = {"&&": (lambda left, right: left and right),
+               "||": (lambda left, right: left or right),
+               "<": (lambda left, right: left < right),
+               ">": (lambda left, right: left > right),
+               ">=": (lambda left, right: left >= right),
+               "<=": (lambda left, right: left <= right),
+               "==": (lambda left, right: left == right),
+               "!=": (lambda left, right: left != right)}
+    if tree.info in options:
+        return options[tree.info](solve_tree(tree.left.info, x, y), solve_tree(tree.right.info, x, y))
     elif tree.info == 'x':
         return x
     elif tree.info == 'y':
