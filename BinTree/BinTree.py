@@ -6,17 +6,17 @@ class BinTreeNode(object):
 
     def insert_left_child(self, node):
         if self.left is None:
-            self.left = BinTreeNode(node)
+            self.left = node
         else:
-            tree = BinTreeNode(node)
+            tree = node
             tree.left = self.left
             self.left = tree
 
     def insert_right_child(self, node):
         if self.right is None:
-            self.right = BinTreeNode(node)
+            self.right = node
         else:
-            tree = BinTreeNode(node)
+            tree = node
             tree.right = self.right
             self.right = tree
 
@@ -60,7 +60,7 @@ def solve_tree(tree, x, y):
                "==": (lambda left, right: left == right),
                "!=": (lambda left, right: left != right)}
     if tree.info in options:
-        return options[tree.info](solve_tree(tree.left.info, x, y), solve_tree(tree.right.info, x, y))
+        return options[tree.info](solve_tree(tree.left, x, y), solve_tree(tree.right, x, y))
     elif tree.info == 'x':
         return x
     elif tree.info == 'y':
