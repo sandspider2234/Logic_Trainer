@@ -23,26 +23,28 @@ class BinTreeNode(object):
 
 def build_tree(string):
     tree = BinTreeNode(None)
-    for index, char in enumerate(string):
-        if tree.info is None:
-            if (char == '|' and string[index + 1] == '|') or \
-                    (char == '&' and string[index + 1] == '&'):
-                tree = BinTreeNode(string[index:index + 2])
-                tree.insert_right_child(build_tree(string[index + 2:len(string)]))
-                tree.insert_left_child(build_tree(string[:index]))
-    for index, char in enumerate(string):
-        if tree.info is None:
-            if (char == '<' and string[index + 1] == '=') or \
-                    (char == '>' and string[index + 1] == '=') or \
-                    (char == '=' and string[index + 1] == '=') or \
-                    (char == '!' and string[index + 1] == '='):
-                tree = BinTreeNode(string[index:index + 2])
-                tree.insert_right_child(build_tree(string[index + 2:len(string)]))
-                tree.insert_left_child(build_tree(string[:index]))
-            elif char == '>' or char == '<':
-                tree = BinTreeNode(char)
-                tree.insert_right_child(build_tree(string[index + 1:len(string)]))
-                tree.insert_left_child(build_tree(string[:index]))
+    if any(operator in string for operator in ['&&', '||']):
+        for index, char in enumerate(string):
+            if tree.info is None:
+                if (char == '|' and string[index + 1] == '|') or \
+                        (char == '&' and string[index + 1] == '&'):
+                    tree = BinTreeNode(string[index:index + 2])
+                    tree.insert_right_child(build_tree(string[index + 2:]))
+                    tree.insert_left_child(build_tree(string[:index]))
+    if any(operator in string for operator in ['<=', '>=', '==', '!=', '>', '<']):
+        for index, char in enumerate(string):
+            if tree.info is None:
+                if (char == '<' and string[index + 1] == '=') or \
+                        (char == '>' and string[index + 1] == '=') or \
+                        (char == '=' and string[index + 1] == '=') or \
+                        (char == '!' and string[index + 1] == '='):
+                    tree = BinTreeNode(string[index:index + 2])
+                    tree.insert_right_child(build_tree(string[index + 2:]))
+                    tree.insert_left_child(build_tree(string[:index]))
+                elif char == '>' or char == '<':
+                    tree = BinTreeNode(char)
+                    tree.insert_right_child(build_tree(string[index + 1:]))
+                    tree.insert_left_child(build_tree(string[:index]))
     if tree.info is None:
         return BinTreeNode(string.strip())
     return tree
