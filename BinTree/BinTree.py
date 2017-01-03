@@ -50,11 +50,11 @@ def build_tree(string):
     return tree
 
 
-def solve_tree(tree, x, y):
+def solve_tree(tree, x=0, y=0):
     options = {"&&": (lambda left, right: left and right),
                "||": (lambda left, right: left or right),
-               "<": (lambda left, right: left < right),
-               ">": (lambda left, right: left > right),
+               "<":  (lambda left, right: left < right),
+               ">":  (lambda left, right: left > right),
                ">=": (lambda left, right: left >= right),
                "<=": (lambda left, right: left <= right),
                "==": (lambda left, right: left == right),

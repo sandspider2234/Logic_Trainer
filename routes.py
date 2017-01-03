@@ -95,7 +95,7 @@ def tester():
     form = forms.StatementForm()
     if form.validate_on_submit():
         try:
-            solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data), 0, 0)
+            solution = BinTree.solve_tree(BinTree.build_tree(form.statement.data))
             if type(solution) is not bool:
                 raise ValueError
             flask.flash('Given statement is {0}, solution is {1}'.format(form.statement.data, str(solution)))
