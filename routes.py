@@ -124,11 +124,11 @@ def login():
                     flask.flash('Username or email already exist!', 'error')
                     return flask.redirect('/login')
             with connection.cursor() as cursor:
-                sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, SHA1(%s))"
+                sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, SHA2(%s, 256))"
                 cursor.execute(sql, (signup_form.username.data, signup_form.email.data, signup_form.password.data))
                 connection.commit()
         with db.create_connection() as connection, connection.cursor() as cursor:
-            sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
+            sql = "SELECT * FROM users WHERE username=%s AND password=SHA2(%s, 256)"
             cursor.execute(sql, (signup_form.username.data, signup_form.password.data))
             result = cursor.fetchone()
             if flask_login.login_user(load_user(result['id'])):
@@ -142,7 +142,7 @@ def login():
 
     if login_form.login.data and login_form.validate_on_submit():
         with db.create_connection() as connection, connection.cursor() as cursor:
-            sql = "SELECT * FROM users WHERE username=%s AND password=SHA1(%s)"
+            sql = "SELECT * FROM users WHERE username=%s AND password=SHA2(%s, 256)"
             cursor.execute(sql, (login_form.username.data, login_form.password.data))
             result = cursor.fetchone()
             if result:
